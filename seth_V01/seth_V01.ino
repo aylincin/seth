@@ -22,12 +22,10 @@ void setup() {
 }
 
 void loop() {
- //CircuitPlayground.clearPixels();
-
  input = digitalRead(TOUCH_PIN);
 
  if(input == HIGH && !inputBlocked && !lockEmotion) {
-  if(currentEmotion == 4){
+  if(currentEmotion == 5){
     currentEmotion = 0;    
   }
   
@@ -88,7 +86,9 @@ void setEmotion(int colorNumber) {
         CircuitPlayground.setPixelColor(i, 50,0,100); //wut
       }
       break;
-
+    case 5:
+      CircuitPlayground.clearPixels();
+      break;
   }
   
 }
