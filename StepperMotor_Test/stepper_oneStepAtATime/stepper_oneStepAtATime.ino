@@ -20,8 +20,8 @@ void setup() {
   // Set the speed to 5 rpm:
   myStepperX.setSpeed(motorSpeed);
   myStepperY.setSpeed(motorSpeed);
-  
-  // Begin Serial communication at a baud rate of 9600:
+
+  pinMode(D9, INPUT);                                 
   
 }
 
@@ -37,6 +37,9 @@ int stepperYSpeed = 5000;
 int testFakeString = 0;
 
 void loop() {
+  if(digitalRead(D9) == LOW){
+    Serial.println("MAGNET POWER");
+  }
   
   if(lastChange == 0){
     lastChange = millis();
@@ -127,4 +130,8 @@ String getValue(String data, char separator, int index)
   }
 
   return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
+}
+
+void detectMagnet() {
+  Serial.println("Magnet detected");
 }
