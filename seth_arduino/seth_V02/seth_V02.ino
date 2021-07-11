@@ -1,8 +1,13 @@
 #include <Adafruit_NeoPixel.h>
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+#include <Wire.h>
+#define TOUCH_PIN D8
+#define LED_PIN D4
 
-#include <Adafruit_CircuitPlayground.h>
+Adafruit_MPU6050 mpu;
 
-int TOUCH_PIN = 9;
+
 int input = LOW;
 int currentEmotion;
 
@@ -11,13 +16,26 @@ bool lockEmotion = false;
 bool lockLocked = false;
 
 unsigned long lockTimer = 0;
-
+Adafruit_NeoPixel pixels(12, LED_PIN, NEO_GRB + NEO_KHZ800);
 void setup() {
   Serial.begin(9600);
-  CircuitPlayground.begin();
+
+  pixels.begin();
+  pixels.show();
+//  pixels.setBrightness(100);  
 
   pinMode(TOUCH_PIN, INPUT);
-  CircuitPlayground.strip.setBrightness(100);
+  
+// Try to initialize!
+//  if (!mpu.begin()) {
+//    Serial.println("Failed to find MPU6050 chip");
+//    while (1) {
+//      delay(10);
+//    }
+//  }
+//  Serial.println("MPU6050 Found!");
+
+  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
 
 }
 
@@ -26,15 +44,19 @@ float xFinalLast = 0;
 unsigned long lastDirectionUpdate = 0;
 
 void loop() {
-  float y = CircuitPlayground.motionY();
-  float x = CircuitPlayground.motionX();
-  float z = CircuitPlayground.motionZ();
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+  
+  float y = a.acceleration.x;
+  float x = a.acceleration.y;
+  float z = a.acceleration.z;
 
   float yDegree = (y / 9.8) * 90;
   float yFinal = 0;
   float xDegree = (x / 9.8) * 90;
   float xFinal = 0;
   bool top = z > 0 ? true : false;
+
 
 
   if (top) {    
@@ -92,10 +114,6 @@ void loop() {
     }
      
 
-
-  //Serial.println(yFinal);
-
-
   input = digitalRead(TOUCH_PIN);
 
   if (input == HIGH && !inputBlocked && !lockEmotion) {
@@ -107,7 +125,6 @@ void loop() {
     else {
       currentEmotion++;
     }
-
     setEmotion(currentEmotion);
     inputBlocked = true;
   }
@@ -134,34 +151,41 @@ void loop() {
 
 
 void setEmotion(int colorNumber) {
+  Serial.println(colorNumber);
   switch (colorNumber) {
     case 0:
-      for (int i = 0; i <= 10; i++) {
-        CircuitPlayground.setPixelColor(i, 100, 0, 50); //wut
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 100, 0, 50); //wut
+        pixels.show();
       }
       break;
     case 1:
-      for (int i = 0; i <= 10; i++) {
-        CircuitPlayground.setPixelColor(i, 100, 0, 0); //wut
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 100, 0, 0); //wut
+        pixels.show();
       }
       break;
     case 2:
-      for (int i = 0; i <= 10; i++) {
-        CircuitPlayground.setPixelColor(i, 100, 100, 0); //wut
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 100, 100, 0); //wut
+        pixels.show();
       }
       break;
     case 3:
-      for (int i = 0; i <= 10; i++) {
-        CircuitPlayground.setPixelColor(i, 100, 0, 100); //wut
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 100, 0, 100); //wut
+        pixels.show();
       }
       break;
     case 4:
-      for (int i = 0; i <= 10; i++) {
-        CircuitPlayground.setPixelColor(i, 50, 0, 100); //wut
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 50, 0, 100); //wut
+        pixels.show();
       }
       break;
     case 5:
-      CircuitPlayground.clearPixels();
+      pixels.clear();
+      pixels.show();
       break;
   }
 
