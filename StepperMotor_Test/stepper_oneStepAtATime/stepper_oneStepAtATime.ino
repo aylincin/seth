@@ -2,30 +2,37 @@
 // Include the Arduino Stepper.h library:
 #include <Stepper.h>
 // Define number of steps per rotation:
-int stepsPerRevolution = 4;
+int stepsPerRevolutionStepperX = 4;
+int stepsPerRevolutionStepperY = 4;
 int motorSpeed = 5000;
+
 // Wiring:
 // Pin 8 to IN1 on the ULN2003 driver
 // Pin 9 to IN2 on the ULN2003 driver
 // Pin 10 to IN3 on the ULN2003 driver
 // Pin 11 to IN4 on the ULN2003 driver
 // Create stepper object called 'myStepper', note the pin order:
-//Stepper myStepper = Stepper(stepsPerRevolution, 8, 10, 9, 11);
-Stepper myStepper2 = Stepper(stepsPerRevolution, D3, D5, D4, D6);
+Stepper myStepperX = Stepper(stepsPerRevolutionStepperX, D1, D3, D2, D4);
+Stepper myStepperY = Stepper(stepsPerRevolutionStepperY, D5, D7, D6, D8);
+
 void setup() {
   Serial.begin(115200);
   // Set the speed to 5 rpm:
-  //myStepper.setSpeed(motorSpeed);
-  myStepper2.setSpeed(motorSpeed);
+  myStepperX.setSpeed(motorSpeed);
+  myStepperY.setSpeed(motorSpeed);
   
   // Begin Serial communication at a baud rate of 9600:
   
 }
 
 unsigned long lastChange = 0;
-String input = "1,3,1,0";
-bool stepper2Active = false;
-int stepperSpeed = 5000;
+String input = "1,3,1,2";
+
+int delayForUpdate = 3000;
+bool stepperXActive = false;
+int stepperXSpeed = 5000;
+bool stepperYActive = false;
+int stepperYSpeed = 5000;
 
 int testFakeString = 0;
 
@@ -35,52 +42,73 @@ void loop() {
     lastChange = millis();
   }
 
-  if(millis() - lastChange >= 3000){
+  if(millis() - lastChange >= delayForUpdate){
     Serial.println(input);
     
     if(getValue(input, ',', 0) == "0"){
-      stepper2Active = false;
+      stepperXActive = false;
     }
     if(getValue(input, ',', 0) == "1"){
-      if(stepsPerRevolution <= 0){
-        stepsPerRevolution = stepsPerRevolution * -1;
+      if(stepsPerRevolutionStepperX <= 0){
+        stepsPerRevolutionStepperX = stepsPerRevolutionStepperX * -1;
       }
-      stepper2Active = true;
+      stepperXActive = true;
     }
     if(getValue(input, ',', 0) == "2"){
-      if(stepsPerRevolution >= 0){
-        stepsPerRevolution = stepsPerRevolution * -1;
+      if(stepsPerRevolutionStepperX >= 0){
+        stepsPerRevolutionStepperX = stepsPerRevolutionStepperX * -1;
       }
-      stepper2Active = true;
+      stepperXActive = true;
     }
-    stepperSpeed = getValue(input, ',', 1).toInt() * 1000;
+
+    if(getValue(input, ',', 2) == "0"){
+      stepperYActive = false;
+    }
+    if(getValue(input, ',', 2) == "1"){
+      if(stepsPerRevolutionStepperY <= 0){
+        stepsPerRevolutionStepperY = stepsPerRevolutionStepperY * -1;
+      }
+      stepperYActive = true;
+    }
+    if(getValue(input, ',', 2) == "2"){
+      if(stepsPerRevolutionStepperY >= 0){
+        stepsPerRevolutionStepperY = stepsPerRevolutionStepperY * -1;
+      }
+      stepperYActive = true;
+    }
+    
+    stepperXSpeed = getValue(input, ',', 1).toInt() * 1000;
+    stepperYSpeed = getValue(input, ',', 1).toInt() * 1000;
     
     lastChange = 0;
 
     testFakeString++;
     
     if(testFakeString == 0){
-      input = "1,2,1,0";
+      input = "1,2,2,5";
     }
     if(testFakeString == 1){
-      input = "2,5,1,0";
+      input = "2,5,1,2";
     }
     if(testFakeString == 2){
-      input = "0,5,1,0";
+      input = "0,5,0,5";
       testFakeString = -1;
     }
     
-    myStepper2.setSpeed(stepperSpeed);
+    myStepperX.setSpeed(stepperXSpeed);
+    myStepperY.setSpeed(stepperYSpeed);
     
   }
   
   // Step one revolution in one direction:
   //Serial.println("clockwise");
-  if(stepper2Active){
-    myStepper2.step(stepsPerRevolution);
+  if(stepperXActive){
+    myStepperX.step(stepsPerRevolutionStepperX);
+  }
+  if(stepperYActive){
+    myStepperY.step(stepsPerRevolutionStepperY);
   }
   
-  //myStepper2.step(stepsPerRevolution);
   
 }
 
