@@ -9,7 +9,7 @@ IPAddress subnet(255,255,255,0);
 
 ESP8266WebServer server;
 
-String dataWhichIsSend = "hallo";
+String dataWhichIsSend = "";
 
 void setup() {
   WiFi.mode(WIFI_AP);
@@ -21,7 +21,6 @@ void setup() {
   Serial.print("IP Address: ");
   Serial.println(WiFi.localIP());
 
-  server.on("/", handleIndex);
   server.on("/update", handleUpdate);
   server.begin();
 
@@ -29,14 +28,10 @@ void setup() {
 
 void loop() {
   server.handleClient();
-
-}
-
-void handleIndex() {
-  server.send(200,"text/plain",String(dataWhichIsSend));
 }
 
 void handleUpdate() {
   dataWhichIsSend = server.arg("value");
+  Serial.println(dataWhichIsSend);
   server.send(200,"text/plain","Updated");
 }
