@@ -16,9 +16,10 @@ String dataWhichIsSend = "";
 // OTHER VARIABLES
 
 // Define number of steps per rotation:
-int stepsPerRevolutionStepperX = 4;
-int stepsPerRevolutionStepperY = 4;
-int motorSpeed = 5000;
+int stepsPerRevolutionStepper = 4000;
+int xDir = 1;
+int yDir = 1;
+int motorSpeed = 9;
 
 // Wiring:
 // Pin 8 to IN1 on the ULN2003 driver
@@ -26,12 +27,12 @@ int motorSpeed = 5000;
 // Pin 10 to IN3 on the ULN2003 driver
 // Pin 11 to IN4 on the ULN2003 driver
 // Create stepper object called 'myStepper', note the pin order:
-Stepper myStepperX = Stepper(stepsPerRevolutionStepperX, D1, D3, D2, D4);
-Stepper myStepperY = Stepper(stepsPerRevolutionStepperY, D5, D7, D6, D8);
+Stepper myStepperX = Stepper(stepsPerRevolutionStepper, D1, D3, D2, D4);
+Stepper myStepperY = Stepper(stepsPerRevolutionStepper, D5, D7, D6, D8);
 
 unsigned long lastChange = 0;
-//String input = "1,5,2,5";
-String input = "0,0,0,0";
+String input = "1,5,2,5";
+//String input = "0,0,0,0";
 
 int delayForUpdate = 1000;
 bool stepperXActive = false;
@@ -88,15 +89,11 @@ void loop() {
       stepperXActive = false;
     }
     if(getValue(input, ',', 0) == "1"){
-      if(stepsPerRevolutionStepperX <= 0){
-        stepsPerRevolutionStepperX = stepsPerRevolutionStepperX * -1;
-      }
+      xDir = 1;
       stepperXActive = true;
     }
     if(getValue(input, ',', 0) == "2"){
-      if(stepsPerRevolutionStepperX >= 0){
-        stepsPerRevolutionStepperX = stepsPerRevolutionStepperX * -1;
-      }
+      xDir = -1;
       stepperXActive = true;
     }
 
@@ -104,15 +101,11 @@ void loop() {
       stepperYActive = false;
     }
     if(getValue(input, ',', 2) == "1"){
-      if(stepsPerRevolutionStepperY <= 0){
-        stepsPerRevolutionStepperY = stepsPerRevolutionStepperY * -1;
-      }
+      yDir = 1;
       stepperYActive = true;
     }
     if(getValue(input, ',', 2) == "2"){
-      if(stepsPerRevolutionStepperY >= 0){
-        stepsPerRevolutionStepperY = stepsPerRevolutionStepperY * -1;
-      }
+      yDir = -1;
       stepperYActive = true;
     }
     if(getValue(input, ',', 1) != "0"){
@@ -133,13 +126,13 @@ void loop() {
     //myStepperY.setSpeed(stepperYSpeed);
     
   }
-  
-  if(stepperXActive){
-    myStepperX.step(stepsPerRevolutionStepperX);
-  }
-  if(stepperYActive){
-    myStepperY.step(stepsPerRevolutionStepperY);
-  }
+    
+    if(stepperXActive){
+      myStepperX.step(xDir);
+    }
+    if(stepperYActive){
+      myStepperY.step(yDir);
+    }
 }
 
 String getValue(String data, char separator, int index)

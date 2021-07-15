@@ -33,9 +33,12 @@ int yValue = 0;
 String messageToSend = "";
 
 void loop() {
-  float y = CircuitPlayground.motionY();
-  float x = CircuitPlayground.motionX();
-  float z = CircuitPlayground.motionZ();
+   sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+  
+  float y = a.acceleration.x;
+  float x = a.acceleration.y;
+  float z = a.acceleration.z;
 
   float yDegree = (y / 9.8) * 90;
   float yFinal = 0;
