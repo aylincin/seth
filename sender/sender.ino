@@ -39,8 +39,8 @@ void setup() {
   
 
   pixels.begin();
+  pixels.clear();
   pixels.show();
-  pixels.setBrightness(100);  
 
   pinMode(TOUCH_PIN, INPUT);
   
@@ -115,9 +115,10 @@ void loop() {
     }
   }
 
-        if (lastDirectionUpdate == 0){
+    if (lastDirectionUpdate == 0){
       lastDirectionUpdate = millis();
     }
+    
     if(millis() - lastDirectionUpdate >= 50){   
       if (movementResetUpdate == 0){
       movementResetUpdate = millis();
@@ -167,18 +168,15 @@ void loop() {
       messageToSend = String(xValue) + "," + String(ballSpeedX) + "," + String(yValue) + "," + String(ballSpeedY) + "," + String(currentEmotion);
 
       Serial.println(messageToSend);
+      
       if(client.connect(host, 80)){
         String url = "/update?value=" + messageToSend;
         client.print(String("GET ") + url + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Connection: keep-alive\r\n\r\n");
       }
-      delay(10);
-      while(client.available()){
-        String line = client.readStringUntil('\r');
-        Serial.println(line);
-      }
       
     }
-     
+
+    
 
   input = digitalRead(TOUCH_PIN);
 
@@ -220,10 +218,8 @@ void setEmotion(int colorNumber) {
   Serial.println(colorNumber);
   switch (colorNumber) {
     case 0:
-      for (int i = 0; i <= pixels.numPixels(); i++) {
-        pixels.setPixelColor(i, 100, 0, 50); //wut
-        pixels.show();
-      }
+      pixels.clear();
+      pixels.show();
       break;
     case 1:
       for (int i = 0; i <= pixels.numPixels(); i++) {
@@ -250,8 +246,10 @@ void setEmotion(int colorNumber) {
       }
       break;
     case 5:
-      pixels.clear();
-      pixels.show();
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 100, 0, 50); //wut
+        pixels.show();
+      }
       break;
   }
 

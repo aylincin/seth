@@ -31,13 +31,13 @@ int motorSpeed = 14;
 Stepper myStepperX = Stepper(stepsPerRevolutionStepper, D1, D3, D2, D4);
 Stepper myStepperY = Stepper(stepsPerRevolutionStepper, D5, D7, D6, D8);
 
-Adafruit_NeoPixel pixels(10, D10, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels(10, D10, NEO_KHZ800 + NEO_GRB);
 
 unsigned long lastChange = 0;
 //String input = "1,5,2,5,3";
 String input = "0,0,0,0,0";
 
-int delayForUpdate = 1000;
+int delayForUpdate = 200;
 bool stepperXActive = false;
 int stepperXSpeed = 5000;
 bool stepperYActive = false;
@@ -47,6 +47,7 @@ unsigned long unblockReceiveTimer = 0;
 int unblockDuration = 30000;
 
 void setup() {
+  
   // WIFI SETUP
   WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(ip, gateway, subnet);
@@ -68,19 +69,24 @@ void setup() {
   pinMode(D9, INPUT);
 
   pixels.begin();
-  pixels.show();
-  pixels.setBrightness(50);
-
                                   
 }
 
 void handleUpdate() {
-  input = server.arg("value");
+  if(unblockReceive){
+    input = server.arg("value");
+  }
+  else{
+    input = "0,0,0,0,0";
+  }
+  
   //Serial.println(input);
 //  server.send(200,"text/plain","Updated");
 }
 
 void loop() {  
+  // WIFI LOOP
+  server.handleClient();
 
 
   // OTHER LOOP
@@ -90,15 +96,12 @@ void loop() {
   }
 
   if(unblockReceive){
-     // WIFI LOOP
-    server.handleClient();
     if(unblockReceiveTimer == 0){
       unblockReceiveTimer = millis();
     }
     if(millis() - unblockReceiveTimer >= unblockDuration){
       unblockReceive = false;
       unblockReceiveTimer = 0;
-      input = "0,0,0,0,0";
       Serial.println("Blocked");
     }
   }
@@ -186,10 +189,8 @@ void setEmotion(int colorNumber) {
   //Serial.println(colorNumber);
   switch (colorNumber) {
     case 0:
-      for (int i = 0; i <= pixels.numPixels(); i++) {
-        pixels.setPixelColor(i, 100, 0, 50); //wut
-        pixels.show();
-      }
+      pixels.clear();
+      pixels.show();
       break;
     case 1:
       for (int i = 0; i <= pixels.numPixels(); i++) {
@@ -216,8 +217,10 @@ void setEmotion(int colorNumber) {
       }
       break;
     case 5:
-      pixels.clear();
-      pixels.show();
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 100, 0, 50); //wut
+        pixels.show();
+      }
       break;
   }
 
