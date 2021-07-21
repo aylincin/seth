@@ -132,23 +132,23 @@ void loop() {
       }
     
          
-      if(yFinalLast - yFinal > 10 && yFinalLast - yFinal < 90){
+      if(yFinalLast - yFinal > 20 && yFinalLast - yFinal < 90){
         //Serial.println("Rechts");
         xValue = 1;
         ballSpeedY = (yFinalLast - yFinal) / 10;
       }
-      if(yFinalLast - yFinal < -10 && yFinalLast - yFinal > -90){
+      if(yFinalLast - yFinal < -20 && yFinalLast - yFinal > -90){
         //Serial.println("Links");
         xValue = 2;
         ballSpeedY = abs(yFinalLast - yFinal) / 10;
       }
 
-      if(xFinalLast - xFinal > 10 && xFinalLast - xFinal < 90){
+      if(xFinalLast - xFinal > 20 && xFinalLast - xFinal < 90){
         //Serial.println("Zurück");
         yValue = 1;
         ballSpeedX = (xFinalLast - xFinal) / 10;
       }
-      if(xFinalLast - xFinal < -10 && xFinalLast - xFinal > -90){
+      if(xFinalLast - xFinal < -20 && xFinalLast - xFinal > -90){
         //Serial.println("Vor");
         yValue = 2;
         ballSpeedX = abs(xFinalLast - xFinal) / 10;
@@ -235,13 +235,13 @@ void setEmotion(int colorNumber) {
       break;
     case 3:
       for (int i = 0; i <= pixels.numPixels(); i++) {
-        pixels.setPixelColor(i, 100, 0, 100); //wut
+        pixels.setPixelColor(i, 0, 0, 100); //wut
         pixels.show();
       }
       break;
     case 4:
       for (int i = 0; i <= pixels.numPixels(); i++) {
-        pixels.setPixelColor(i, 50, 0, 100); //wut
+        pixels.setPixelColor(i, 0, 100, 0); //wut
         pixels.show();
       }
       break;

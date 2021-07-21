@@ -3,6 +3,7 @@
 #include <Stepper.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
+#include <Adafruit_NeoPixel.h>
 
 // WIFI VARIABLES
 char * ssid_ap = "nodeMCU";
@@ -16,10 +17,10 @@ String dataWhichIsSend = "";
 // OTHER VARIABLES
 
 // Define number of steps per rotation:
-int stepsPerRevolutionStepper = 4000;
+int stepsPerRevolutionStepper = 2000;
 int xDir = 1;
 int yDir = 1;
-int motorSpeed = 9;
+int motorSpeed = 14;
 
 // Wiring:
 // Pin 8 to IN1 on the ULN2003 driver
@@ -30,17 +31,23 @@ int motorSpeed = 9;
 Stepper myStepperX = Stepper(stepsPerRevolutionStepper, D1, D3, D2, D4);
 Stepper myStepperY = Stepper(stepsPerRevolutionStepper, D5, D7, D6, D8);
 
-unsigned long lastChange = 0;
-String input = "1,5,2,5";
-//String input = "0,0,0,0";
+Adafruit_NeoPixel pixels(10, D10, NEO_KHZ800 + NEO_GRB);
 
-int delayForUpdate = 1000;
+unsigned long lastChange = 0;
+//String input = "1,5,2,5,3";
+String input = "0,0,0,0,0";
+
+int delayForUpdate = 200;
 bool stepperXActive = false;
 int stepperXSpeed = 5000;
 bool stepperYActive = false;
 int stepperYSpeed = 5000;
+bool unblockReceive = false;
+unsigned long unblockReceiveTimer = 0;
+int unblockDuration = 30000;
 
 void setup() {
+  
   // WIFI SETUP
   WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(ip, gateway, subnet);
@@ -59,13 +66,21 @@ void setup() {
   myStepperX.setSpeed(motorSpeed);
   myStepperY.setSpeed(motorSpeed);
 
-  pinMode(D9, INPUT);                                 
-  
+  pinMode(D9, INPUT);
+
+  pixels.begin();
+                                  
 }
 
 void handleUpdate() {
-  input = server.arg("value");
-  Serial.println(input);
+  if(unblockReceive){
+    input = server.arg("value");
+  }
+  else{
+    input = "0,0,0,0,0";
+  }
+  
+  //Serial.println(input);
 //  server.send(200,"text/plain","Updated");
 }
 
@@ -73,10 +88,23 @@ void loop() {
   // WIFI LOOP
   server.handleClient();
 
+
   // OTHER LOOP
-  /*if(digitalRead(D9) == LOW){
-    Serial.println("MAGNET POWER");
-  }*/
+  if(digitalRead(D9) == LOW && !unblockReceive){
+    Serial.println("Unblocked");
+    unblockReceive = true;
+  }
+
+  if(unblockReceive){
+    if(unblockReceiveTimer == 0){
+      unblockReceiveTimer = millis();
+    }
+    if(millis() - unblockReceiveTimer >= unblockDuration){
+      unblockReceive = false;
+      unblockReceiveTimer = 0;
+      Serial.println("Blocked");
+    }
+  }
   
   if(lastChange == 0){
     lastChange = millis();
@@ -120,7 +148,7 @@ void loop() {
     }
     
     lastChange = 0;
-
+    setEmotion(getValue(input, ',', 4).toInt());
     
     //myStepperX.setSpeed(stepperXSpeed);
     //myStepperY.setSpeed(stepperYSpeed);
@@ -154,4 +182,46 @@ String getValue(String data, char separator, int index)
 
 void detectMagnet() {
   Serial.println("Magnet detected");
+}
+
+
+void setEmotion(int colorNumber) {
+  //Serial.println(colorNumber);
+  switch (colorNumber) {
+    case 0:
+      pixels.clear();
+      pixels.show();
+      break;
+    case 1:
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 100, 0, 0); //wut
+        pixels.show();
+      }
+      break;
+    case 2:
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 100, 100, 0); //wut
+        pixels.show();
+      }
+      break;
+    case 3:
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 0, 0, 100); //wut
+        pixels.show();
+      }
+      break;
+    case 4:
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 0, 100, 0); //wut
+        pixels.show();
+      }
+      break;
+    case 5:
+      for (int i = 0; i <= pixels.numPixels(); i++) {
+        pixels.setPixelColor(i, 100, 0, 50); //wut
+        pixels.show();
+      }
+      break;
+  }
+
 }
