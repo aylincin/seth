@@ -36,7 +36,7 @@
   <h3 align="center">SETH</h3>
 
   <p align="center">
-    project_description
+    Straight Emotion To Heart
     <br />
     <a href="https://github.com/aylincin/seth"><strong>Explore the docs »</strong></a>
     <br />
