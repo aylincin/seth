@@ -1,11 +1,9 @@
-/* Example sketch to control a 28BYJ-48 stepper motor with ULN2003 driver board and Arduino UNO. More info: https://www.makerguides.com */
-// Include the Arduino Stepper.h library:
 #include <Stepper.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <Adafruit_NeoPixel.h>
 
-// WIFI VARIABLES
+// WIFI Network Variables
 char * ssid_ap = "nodeMCU";
 char * password_ap = "password";
 IPAddress ip(192,168,11,4);
@@ -14,37 +12,34 @@ IPAddress subnet(255,255,255,0);
 ESP8266WebServer server;
 String dataWhichIsSend = "";
 
-// OTHER VARIABLES
 
-// Define number of steps per rotation:
-int stepsPerRevolutionStepper = 2000;
-int xDir = 1;
-int yDir = 1;
-int motorSpeed = 14;
+int stepsPerRevolutionStepper = 2000; // Define number of steps per rotation:
+int xDir = 1; // Stepper direction variable for x axis
+int yDir = 1; // Stepper direction variable for y axis
+int motorSpeed = 14; // Stepper motorspeed
 
-// Wiring:
-// Pin 8 to IN1 on the ULN2003 driver
-// Pin 9 to IN2 on the ULN2003 driver
-// Pin 10 to IN3 on the ULN2003 driver
-// Pin 11 to IN4 on the ULN2003 driver
-// Create stepper object called 'myStepper', note the pin order:
-Stepper myStepperX = Stepper(stepsPerRevolutionStepper, D1, D3, D2, D4);
-Stepper myStepperY = Stepper(stepsPerRevolutionStepper, D5, D7, D6, D8);
 
-Adafruit_NeoPixel pixels(10, D10, NEO_KHZ800 + NEO_GRB);
+Stepper myStepperX = Stepper(stepsPerRevolutionStepper, D1, D3, D2, D4); //Init of stepperX and pins
+Stepper myStepperY = Stepper(stepsPerRevolutionStepper, D5, D7, D6, D8); //Init of stepperY and pins
 
-unsigned long lastChange = 0;
-//String input = "1,5,2,5,3";
-String input = "0,0,0,0,0";
 
-int delayForUpdate = 200;
-bool stepperXActive = false;
-int stepperXSpeed = 5000;
-bool stepperYActive = false;
-int stepperYSpeed = 5000;
-bool unblockReceive = false;
-unsigned long unblockReceiveTimer = 0;
-int unblockDuration = 30000;
+Adafruit_NeoPixel pixels(10, D10, NEO_KHZ800 + NEO_GRB); //Init of led strip
+
+
+unsigned long lastChange = 0; //LastChange variable for timer
+
+
+String input = "0,0,0,0,0"; //input string which is changed by receiving data
+
+
+int delayForUpdate = 200; //init of delay
+bool stepperXActive = false; //sets x-stepper active variable to false, which is used in loop to activate/deactivate .step of stepper
+bool stepperYActive = false; //sets y-stepper active variable to false, which is used in loop to activate/deactivate .step of stepper
+int stepperXSpeed = 0; //init stepperXSpeed which will be calculated in loop
+int stepperYSpeed = 0; //init stepperYSpeed which will be calculated in loop
+bool unblockReceive = false; //variable to control if input string is set to received data
+unsigned long unblockReceiveTimer = 0; //Timer how long data will be received and set to input string
+int unblockDuration = 30000; //duration for unblockReceiveTimer
 
 void setup() {
   
@@ -61,59 +56,61 @@ void setup() {
   server.on("/update", handleUpdate);
   server.begin();
 
-  // OTHER SETUP
-  // Set the speed to 5 rpm:
+  // Sets the speed of stepperX and stepperY
   myStepperX.setSpeed(motorSpeed);
   myStepperY.setSpeed(motorSpeed);
 
+  //Sets hall-sensor pin
   pinMode(D9, INPUT);
 
+  //activates neopixel strip
   pixels.begin();
                                   
 }
 
+//Handles receiving data of sender
 void handleUpdate() {
-  if(unblockReceive){
+  if(unblockReceive){ //if unblockReceive is true, input string will be set to received data
     input = server.arg("value");
   }
-  else{
+  else{ //else all values of the string are set to 0 to deactivate the steppers
     input = "0,0,0,0,0";
   }
   
-  //Serial.println(input);
-//  server.send(200,"text/plain","Updated");
+  //can be used to answer sender when receiving was successful
+  //  server.send(200,"text/plain","Updated"); 
 }
 
 void loop() {  
   // WIFI LOOP
   server.handleClient();
 
-
-  // OTHER LOOP
-  if(digitalRead(D9) == LOW && !unblockReceive){
+  //reads the status of the hall-sensor
+  if(digitalRead(D9) == LOW && !unblockReceive){ //if magnet on hall sensor and receiving data is currently blocked, receiving will be unblocked
     Serial.println("Unblocked");
     unblockReceive = true;
   }
 
-  if(unblockReceive){
-    if(unblockReceiveTimer == 0){
-      unblockReceiveTimer = millis();
+  if(unblockReceive){ // if receiving is unblocked
+    if(unblockReceiveTimer == 0){ // Timer will start if its not already running
+      unblockReceiveTimer = millis(); // unblockReceiveTimer is set to milliseconds passed since the Arduino board began running the current program
     }
-    if(millis() - unblockReceiveTimer >= unblockDuration){
-      unblockReceive = false;
-      unblockReceiveTimer = 0;
+    if(millis() - unblockReceiveTimer >= unblockDuration){ // check if difference of millis() and start point is bigger then unblockDuration
+      unblockReceive = false; // receiving will be blocked
+      unblockReceiveTimer = 0; // resets timer so it can be activated in the next iteration of the loop
       Serial.println("Blocked");
     }
   }
   
-  if(lastChange == 0){
-    lastChange = millis();
+  if(lastChange == 0){ // Timer will start if its not already running
+    lastChange = millis(); // // lastChange is set to milliseconds passed since the Arduino board began running the current program
   }
 
-  if(millis() - lastChange >= delayForUpdate){
-    Serial.println(input);
+  if(millis() - lastChange >= delayForUpdate){ // check if difference of millis() and start point is bigger then delayForUpdate
+    Serial.println(input); // Current input string is printed for debugging
     
-    if(getValue(input, ',', 0) == "0"){
+    //Checks which value is in the input string first position and controls direction and active state of stepper X
+    if(getValue(input, ',', 0) == "0"){ 
       stepperXActive = false;
     }
     if(getValue(input, ',', 0) == "1"){
@@ -125,6 +122,7 @@ void loop() {
       stepperXActive = true;
     }
 
+    //Checks which value is in the input string third position and controls direction and active state of stepper Y
     if(getValue(input, ',', 2) == "0"){
       stepperYActive = false;
     }
@@ -136,33 +134,39 @@ void loop() {
       yDir = -1;
       stepperYActive = true;
     }
+
+    //Checks which value is in the input string second position and calculates stepper X speed
     if(getValue(input, ',', 1) != "0"){
       stepperXSpeed = getValue(input, ',', 1).toInt() * 1000;
     } else {
       stepperXSpeed = 1;
     }
+
+    //Checks which value is in the input string fourth position and calculates stepper Y speed
     if(getValue(input, ',', 3) != "0"){
       stepperYSpeed = getValue(input, ',', 3).toInt() * 1000;
     } else {
       stepperYSpeed = 1;
     }
     
-    lastChange = 0;
-    setEmotion(getValue(input, ',', 4).toInt());
+    lastChange = 0; // resets timer so it can be activated in the next iteration of the loop
+    setEmotion(getValue(input, ',', 4).toInt()); // method call to set the color of the neopixel strip by reading the fifth value of the input string
     
+    //deactived because stepper did not have enough speed and power for changing the stepper speed to different values
     //myStepperX.setSpeed(stepperXSpeed);
     //myStepperY.setSpeed(stepperYSpeed);
     
   }
     
-    if(stepperXActive){
-      myStepperX.step(xDir);
+    if(stepperXActive){ //controls active state of stepper X
+      myStepperX.step(xDir); //actual step for stepper X, direction depending on xDir set
     }
-    if(stepperYActive){
-      myStepperY.step(yDir);
+    if(stepperYActive){ //controls active state of stepper Y
+      myStepperY.step(yDir); //actual step for stepper Y, direction depending on yDir set
     }
 }
 
+//Method to read values from the input string, by using a seperator. Similar to string.split()
 String getValue(String data, char separator, int index)
 {
   int found = 0;
@@ -180,12 +184,8 @@ String getValue(String data, char separator, int index)
   return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
-void detectMagnet() {
-  Serial.println("Magnet detected");
-}
-
-
-void setEmotion(int colorNumber) {
+// method to set the neopixel strip color with colorNumber
+void setEmotion(int colorNumber) { 
   //Serial.println(colorNumber);
   switch (colorNumber) {
     case 0:
