@@ -39,7 +39,8 @@
   <h3 align="center">SETH</h3>
 
   <p align="center">
-    In the prototype Seth, a system was developed to exchange emotions over distances. In the system, there are two spheres. One of them is small and is responsible for the input of the emotion. The second sphere, which is larger and has a frame, displays the sent emotions. In order to be able to send emotions, the small sphere must be held at a certain point on the frame of the larger sphere, so that the feeling of closeness is conveyed and the sending of data can begin. Then, live data is sent to the receiver's output sphere, which uses motors to move the large sphere and display the same motion as the input sphere. This allows the sender to intuitively and individually express their emotions while the receiver can perceive them.
+    
+    
 
     <br />
     <a href="https://github.com/aylincin/seth"><strong>Explore the docs »</strong></a>
@@ -86,18 +87,20 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+In the prototype Seth, a system was developed to exchange emotions over distances. In the system, there are two spheres. One of them is small and is responsible for the input of the emotion. The second sphere, which is larger and has a frame, displays the sent emotions. In order to be able to send emotions, the small sphere must be held at a certain point on the frame of the larger sphere, so that the feeling of closeness is conveyed and the sending of data can begin. Then, live data is sent to the receiver's output sphere, which uses motors to move the large sphere and display the same motion as the input sphere. This allows the sender to intuitively and individually express their emotions while the receiver can perceive them.
+
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started:
+<!-- Here's a blank template to get started:
 **To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`github_username`, `repo_name`, `twitter_handle`, `email`, `project_title`, `project_description`
+`github_username`, `repo_name`, `twitter_handle`, `email`, `project_title`, `project_description` -->
 
 
-### Built With
+<!-- ### Built With
 
 * []()
 * []()
-* []()
+* []() -->
 
 
 
@@ -108,11 +111,7 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+No Prerequisites needed.
 
 ### Installation
 
@@ -171,7 +170,7 @@ Distributed under the MIT License. See `LICENSE` for more information. -->
 
 <!-- Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email -->
 
-Project Link: [https://github.com/aylinci/seth](https://github.com/aylinci/seth)
+Project Link: [https://github.com/aylincin/seth](https://github.com/aylincin/seth)
 
 
 
@@ -188,15 +187,15 @@ Project Link: [https://github.com/aylinci/seth](https://github.com/aylinci/seth)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/aylinci/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/aylinci/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/aylinci/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/aylinci/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/aylinci/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/aylinci/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/aylinci/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/aylinci/repo/issues
-[license-shield]: https://img.shields.io/github/license/aylinci/repo.svg?style=for-the-badge
-[license-url]: https://github.com/aylinci/repo/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/aylincin/repo.svg?style=for-the-badge
+[contributors-url]: https://github.com/aylincin/repo/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/aylincin/repo.svg?style=for-the-badge
+[forks-url]: https://github.com/aylincin/repo/network/members
+[stars-shield]: https://img.shields.io/github/stars/aylincin/repo.svg?style=for-the-badge
+[stars-url]: https://github.com/aylincin/repo/stargazers
+[issues-shield]: https://img.shields.io/github/issues/aylincin/repo.svg?style=for-the-badge
+[issues-url]: https://github.com/aylincin/repo/issues
+[license-shield]: https://img.shields.io/github/license/aylincin/repo.svg?style=for-the-badge
+[license-url]: https://github.com/aylincin/repo/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/aylinci
+[linkedin-url]: https://linkedin.com/in/aylincin
