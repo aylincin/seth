@@ -41,7 +41,7 @@
     <a href="https://github.com/aylincin/seth"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/aylincin/seth">View Demo</a>
+    <a href="https://www.youtube.com/watch?v=fwbWFBLgVIw">View Demo</a>
     ·
     <a href="https://github.com/aylincin/seth/issues">Report Bug</a>
     ·
@@ -84,7 +84,7 @@
 
 In the prototype Seth, a system was developed to exchange emotions over distances. In the system, there are two spheres. One of them is small and is responsible for the input of the emotion. The second sphere, which is larger and has a frame, displays the sent emotions. In order to be able to send emotions, the small sphere must be held at a certain point on the frame of the larger sphere, so that the feeling of closeness is conveyed and the sending of data can begin. Then, live data is sent to the receiver's output sphere, which uses motors to move the large sphere and display the same motion as the input sphere. This allows the sender to intuitively and individually express their emotions while the receiver can perceive them.
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
 <!-- Here's a blank template to get started:
 **To avoid retyping too much info. Do a search and replace with your text editor for the following:**
