@@ -24,16 +24,13 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 
 
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <a href="https://github.com/aylincin/seth">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">SETH</h3>
@@ -117,7 +114,7 @@ No Prerequisites needed.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/aylinci/seth.git
+   git clone https://github.com/aylincin/seth.git
    ```
 2. Install Arduino
 3. Install Arduino Libraries
@@ -141,7 +138,7 @@ Upload the empfaenger.ino script to the Arduino of the output device and the sen
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/aylinci/seth/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/aylincin/seth/issues) for a list of proposed features (and known issues).
 
 
 
@@ -187,15 +184,11 @@ Project Link: [https://github.com/aylincin/seth](https://github.com/aylincin/set
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/aylincin/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/aylincin/repo/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/aylincin/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/aylincin/repo/network/members
-[stars-shield]: https://img.shields.io/github/stars/aylincin/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/aylincin/repo/stargazers
-[issues-shield]: https://img.shields.io/github/issues/aylincin/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/aylincin/repo/issues
-[license-shield]: https://img.shields.io/github/license/aylincin/repo.svg?style=for-the-badge
-[license-url]: https://github.com/aylincin/repo/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/aylincin
+[contributors-shield]: https://img.shields.io/github/contributors/aylincin/seth.svg?style=for-the-badge
+[contributors-url]: https://github.com/aylincin/seth/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/aylincin/seth.svg?style=for-the-badge
+[forks-url]: https://github.com/aylincin/seth/network/members
+[stars-shield]: https://img.shields.io/github/stars/aylincin/seth.svg?style=for-the-badge
+[stars-url]: https://github.com/aylincin/seth/stargazers
+[issues-shield]: https://img.shields.io/github/issues/aylincin/seth.svg?style=for-the-badge
+[issues-url]: https://github.com/aylincin/seth/issues
