@@ -194,31 +194,31 @@ void setEmotion(int colorNumber) {
       break;
     case 1:
       for (int i = 0; i <= pixels.numPixels(); i++) {
-        pixels.setPixelColor(i, 100, 0, 0); //wut
+        pixels.setPixelColor(i, 100, 0, 0); // red
         pixels.show();
       }
       break;
     case 2:
       for (int i = 0; i <= pixels.numPixels(); i++) {
-        pixels.setPixelColor(i, 100, 100, 0); //wut
+        pixels.setPixelColor(i, 100, 100, 0); //yellow
         pixels.show();
       }
       break;
     case 3:
       for (int i = 0; i <= pixels.numPixels(); i++) {
-        pixels.setPixelColor(i, 0, 0, 100); //wut
+        pixels.setPixelColor(i, 0, 0, 100); //blue
         pixels.show();
       }
       break;
     case 4:
       for (int i = 0; i <= pixels.numPixels(); i++) {
-        pixels.setPixelColor(i, 0, 100, 0); //wut
+        pixels.setPixelColor(i, 0, 100, 0); //green
         pixels.show();
       }
       break;
     case 5:
       for (int i = 0; i <= pixels.numPixels(); i++) {
-        pixels.setPixelColor(i, 100, 0, 50); //wut
+        pixels.setPixelColor(i, 100, 0, 50); //pink
         pixels.show();
       }
       break;
