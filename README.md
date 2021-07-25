@@ -129,7 +129,7 @@ No Prerequisites needed.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Upload the empfaenger.ino script to the Arduino of the output device and the sender.ino script to the input device.
+Upload the empafenger/empfaenger.ino script to the Arduino of the output device and the sender/sender.ino script to the input device.
 
 
 
