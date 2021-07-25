@@ -1,7 +1,7 @@
-#include <Stepper.h>
-#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
-#include <Adafruit_NeoPixel.h>
+#include <Stepper.h> //library for stepper
+#include <ESP8266WiFi.h> //library to use wifi module of esp
+#include <ESP8266WebServer.h> // library to use esp as server
+#include <Adafruit_NeoPixel.h> // library to control ws2812b led strips
 
 // WIFI Network Variables
 char * ssid_ap = "nodeMCU";
@@ -184,7 +184,7 @@ String getValue(String data, char separator, int index)
   return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
-// method to set the neopixel strip color with colorNumber
+// method to set the neopixel strip color by colorNumber
 void setEmotion(int colorNumber) { 
   //Serial.println(colorNumber);
   switch (colorNumber) {
@@ -218,7 +218,7 @@ void setEmotion(int colorNumber) {
       break;
     case 5:
       for (int i = 0; i <= pixels.numPixels(); i++) {
-        pixels.setPixelColor(i, 100, 0, 50); //pink
+        pixels.setPixelColor(i, 100, 0, 50); //purple
         pixels.show();
       }
       break;
